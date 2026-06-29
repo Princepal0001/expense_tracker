@@ -1,0 +1,124 @@
+@(expenses: java.util.List[models.Expense], total: java.math.BigDecimal, categoryTotals: java.util.Map[String, java.math.BigDecimal], userName: String)
+
+@main("Expenses") {
+    <header class="app-header">
+        <div>
+            <p class="eyebrow">Expense Tracker</p>
+            <h1>@userName's expenses</h1>
+        </div>
+        <form method="post" action="/logout">
+            <button class="button secondary" type="submit">Logout</button>
+        </form>
+    </header>
+
+    <main class="app-shell">
+        <section class="summary-grid">
+            <article class="metric">
+                <span>Total spend</span>
+                <strong>₹@total</strong>
+            </article>
+            <article class="metric">
+                <span>Entries</span>
+                <strong>@expenses.size()</strong>
+            </article>
+            <article class="metric">
+                <span>Categories</span>
+                <strong>@categoryTotals.size()</strong>
+            </article>
+        </section>
+
+        <section class="content-grid">
+            <aside class="panel">
+                <h2>Add expense</h2>
+                <form method="post" action="/expenses" class="form-stack">
+                    <label>
+                        <span>Title</span>
+                        <input type="text" name="title" required>
+                    </label>
+
+                    <label>
+                        <span>Category</span>
+                        <select name="category" required>
+                            <option value="Food">Food</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Bills">Bills</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Health">Health</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </label>
+
+                    <div class="split-fields">
+                        <label>
+                            <span>Amount</span>
+                            <input type="number" name="amount" min="0" step="0.01" required>
+                        </label>
+                        <label>
+                            <span>Date</span>
+                            <input type="date" name="expenseDate" required>
+                        </label>
+                    </div>
+
+                    <label>
+                        <span>Note</span>
+                        <textarea name="note" rows="3"></textarea>
+                    </label>
+
+                    <button class="button primary full" type="submit">Add expense</button>
+                </form>
+
+                <div class="category-list">
+                    <h2>By category</h2>
+                    @for(entry <- categoryTotals.entrySet()) {
+                        <div class="category-row">
+                            <span>@entry.getKey()</span>
+                            <strong>₹@entry.getValue()</strong>
+                        </div>
+                    }
+                </div>
+            </aside>
+
+            <section class="panel table-panel">
+                <h2>Recent expenses</h2>
+                @if(expenses.isEmpty()) {
+                    <div class="empty-state">No expenses yet.</div>
+                } else {
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @for(expense <- expenses) {
+                                <tr>
+                                    <td>@expense.expenseDate</td>
+                                    <td>
+                                        <strong>@expense.title</strong>
+                                        @if(expense.note != null && !expense.note.isBlank()) {
+                                            <span class="note">@expense.note</span>
+                                        }
+                                    </td>
+                                    <td><span class="pill">@expense.category</span></td>
+                                    <td>₹@expense.amount</td>
+                                    <td class="actions">
+                                        <a class="small-link" href="/expenses/@expense.id/edit">Edit</a>
+                                        <form method="post" action="/expenses/@expense.id/delete">
+                                            <button class="small-danger" type="submit">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </section>
+        </section>
+    </main>
+}

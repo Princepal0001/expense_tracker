@@ -1,0 +1,22 @@
+# Routes
+# home
+GET     /                           controllers.HomeController.index()
+
+#this route serves static files present in public.
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+#user login and register
+GET     /login                      controllers.AuthController.showLogin()
+POST    /login                      controllers.AuthController.login(request: Request)
+POST    /logout                     controllers.AuthController.logout(request: Request)
+GET     /register                   controllers.AuthController.showRegister()
+POST    /register                   controllers.AuthController.register(request: Request)
+
+#expenses
+GET     /expenses                   controllers.ExpenseController.index(request: Request)
+POST    /expenses                   controllers.ExpenseController.create(request: Request)
+GET     /expenses/:id/edit          controllers.ExpenseController.edit(id: Long, request: Request)
+POST    /expenses/:id               controllers.ExpenseController.update(id: Long, request: Request)
+POST    /expenses/:id/delete        controllers.ExpenseController.delete(id: Long, request: Request)
+
+

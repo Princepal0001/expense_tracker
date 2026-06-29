@@ -1,0 +1,31 @@
+@()
+
+@main("Register") {
+    <main class="auth-shell">
+        <section class="auth-panel">
+            <p class="eyebrow">Create account</p>
+            <h1>Start tracking expenses.</h1>
+
+            <form method="post" action="/register" class="form-stack">
+                <label>
+                    <span>Name</span>
+                    <input type="text" name="name" autocomplete="name" required>
+                </label>
+
+                <label>
+                    <span>Email</span>
+                    <input type="email" name="email" autocomplete="email" required>
+                </label>
+
+                <label>
+                    <span>Password</span>
+                    <input type="password" name="password" autocomplete="new-password" minlength="6" required>
+                </label>
+
+                <button class="button primary full" type="submit">Register</button>
+            </form>
+
+            <p class="muted center">Already have an account? <a href="/login">Login</a></p>
+        </section>
+    </main>
+}

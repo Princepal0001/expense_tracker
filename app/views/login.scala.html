@@ -1,0 +1,30 @@
+@(error: String)
+
+@main("Login") {
+    <main class="auth-shell">
+        <section class="auth-panel">
+            <p class="eyebrow">Welcome back</p>
+            <h1>Login to your tracker.</h1>
+
+            @if(error != null) {
+                <div class="alert">@error</div>
+            }
+
+            <form method="post" action="/login" class="form-stack">
+                <label>
+                    <span>Email</span>
+                    <input type="email" name="email" autocomplete="email" required>
+                </label>
+
+                <label>
+                    <span>Password</span>
+                    <input type="password" name="password" autocomplete="current-password" required>
+                </label>
+
+                <button class="button primary full" type="submit">Login</button>
+            </form>
+
+            <p class="muted center">New here? <a href="/register">Create an account</a></p>
+        </section>
+    </main>
+}
